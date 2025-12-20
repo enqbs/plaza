@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <springProperty name="APP_NAME" scope="context" source="spring.application.name" defaultValue="spring-boot-application" />
+    <springProperty name="LOGSTASH_HOST" scope="context" source="logstash.host" defaultValue="localhost" />
+    <springProperty name="LOGSTASH_PORT" scope="context" source="logstash.port" defaultValue="5044" />
+    <springProperty name="ENABLE_INNER_LOG" scope="context" source="logstash.enable-inner-log" defaultValue="false" />
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- logstash 读取 info 级别日志 -->
+    <appender name="LOGSTASH_INFO" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${LOGSTASH_HOST}:${LOGSTASH_PORT}</destination>
+        <addDefaultStatusListener>${ENABLE_INNER_LOG}</addDefaultStatusListener>
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>Asia/Shanghai</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "index_date": "%d{yyyy/MM/dd}",
+                        "datetime": "%d{yyyy/MM/dd HH:mm:ss.SSS}",
+                        "application": "${APP_NAME}",
+                        "level": "%level",
+                        "thread": "%thread",
+                        "class": "%logger",
+                        "message": "%msg"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- logstash 读取 warn 级别日志 -->
+    <appender name="LOGSTASH_WARN" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${LOGSTASH_HOST}:${LOGSTASH_PORT}</destination>
+        <addDefaultStatusListener>${ENABLE_INNER_LOG}</addDefaultStatusListener>
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>Asia/Shanghai</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "index_date": "%d{yyyy/MM/dd}",
+                        "datetime": "%d{yyyy/MM/dd HH:mm:ss.SSS}",
+                        "application": "${APP_NAME}",
+                        "level": "%level",
+                        "thread": "%thread",
+                        "class": "%logger",
+                        "message": "%msg",
+                        "stack_trace": "%exception{36}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- logstash 读取 error 级别日志 -->
+    <appender name="LOGSTASH_ERROR" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${LOGSTASH_HOST}:${LOGSTASH_PORT}</destination>
+        <addDefaultStatusListener>${ENABLE_INNER_LOG}</addDefaultStatusListener>
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>Asia/Shanghai</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "index_date": "%d{yyyy/MM/dd}",
+                        "datetime": "%d{yyyy/MM/dd HH:mm:ss.SSS}",
+                        "application": "${APP_NAME}",
+                        "level": "%level",
+                        "thread": "%thread",
+                        "class": "%logger",
+                        "message": "%msg",
+                        "stack_trace": "%exception{36}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 异步包装器 - 包装 LOGSTASH_INFO -->
+    <appender name="ASYNC_LOGSTASH_INFO" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LOGSTASH_INFO" />
+        <queueSize>512</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <!-- 异步包装器 - 包装 LOGSTASH_WARN -->
+    <appender name="ASYNC_LOGSTASH_WARN" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LOGSTASH_WARN" />
+        <queueSize>512</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <!-- 异步包装器 - 包装 LOGSTASH_ERROR -->
+    <appender name="ASYNC_LOGSTASH_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LOGSTASH_ERROR" />
+        <queueSize>512</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="ASYNC_LOGSTASH_INFO" />
+        <appender-ref ref="ASYNC_LOGSTASH_WARN" />
+        <appender-ref ref="ASYNC_LOGSTASH_ERROR" />
+    </root>
+</configuration>

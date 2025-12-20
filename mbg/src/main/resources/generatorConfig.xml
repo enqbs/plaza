@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="generator.properties" />
+    <context id="DB2Tables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 不增加 xml 内容 -->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+        <!-- 生成 Lombok 注解 -->
+        <plugin type="com.tzeho.plaza.mbg.plugins.LombokPlugin" />
+        <!-- 生成 DAO 接口 @Mapper 注解 -->
+        <plugin type="com.tzeho.plaza.mbg.plugins.MapperScanPlugin" />
+        <!-- 实现 Serializable 接口 -->
+        <plugin type="com.tzeho.plaza.mbg.plugins.SerializablePlugin" />
+        <!-- 自定义实体类注释 -->
+        <commentGenerator type="com.tzeho.plaza.mbg.plugins.ColumnCommentGeneratorPlugin" />
+        <!-- 连接数据库 -->
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.connectionURL}"
+                        userId="${jdbc.userId}"
+                        password="${jdbc.password}">
+            <property name="nullCatalogMeansCurrent" value="true" />
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.tzeho.plaza.mbg.pojo" targetProject="mbg/src/main/java">
+            <property name="enableSubPackages" value="false" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mapper"  targetProject="mbg/src/main/resources">
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.tzeho.plaza.mbg.dao"  targetProject="mbg/src/main/java">
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+
+        <table schema="public" tableName="%" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" />
+    </context>
+</generatorConfiguration>

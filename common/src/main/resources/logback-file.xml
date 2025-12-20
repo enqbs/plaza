@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  scan="true" scanPeriod="10 seconds">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <springProperty name="APP_NAME" scope="context" source="spring.application.name" defaultValue="spring-boot-application" />
+    <springProperty name="LOGS_PATH" scope="context" source="logging.file.path" defaultValue="logs" />
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %level --- [${APP_NAME}] [%thread] %logger : %msg%n" />
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 保存 info 级别日志 -->
+    <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 保存的日志文件路径 -->
+        <file>${LOGS_PATH}/${APP_NAME}/info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 归档的日志文件名 -->
+            <fileNamePattern>${LOGS_PATH}/${APP_NAME}/info-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <!-- 归档的日志文件最大大小,有效单位:在数值后添加KB、MB、GB. -->
+            <maxFileSize>100MB</maxFileSize>
+            <!-- 归档的日志文件保留天数 -->
+            <maxHistory>30</maxHistory>
+            <!-- 归档的日志文件总大小 -->
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <!-- 保存的日志文件内容格式 -->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <!-- 筛选日志级别 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 保存 warn 级别日志 -->
+    <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS_PATH}/${APP_NAME}/warn.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_PATH}/${APP_NAME}/warn-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 保存 error 级别日志 -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS_PATH}/${APP_NAME}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_PATH}/${APP_NAME}/error-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 异步包装器 - 包装 FILE_INFO -->
+    <appender name="ASYNC_FILE_INFO" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE_INFO" />
+        <!-- 异步日志事件队列大小 默认256 -->
+        <queueSize>512</queueSize>
+        <!-- 队列剩余容量低于此值时开始丢弃日志 默认为队列大小的20% -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 设置为true时 队列满时不阻塞调用线程 -->
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <!-- 异步包装器 - 包装 FILE_WARN -->
+    <appender name="ASYNC_FILE_WARN" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE_WARN" />
+        <queueSize>512</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <!-- 异步包装器 - 包装 FILE_ERROR -->
+    <appender name="ASYNC_FILE_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE_ERROR" />
+        <queueSize>512</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="ASYNC_FILE_INFO" />
+        <appender-ref ref="ASYNC_FILE_WARN" />
+        <appender-ref ref="ASYNC_FILE_ERROR" />
+    </root>
+</configuration>

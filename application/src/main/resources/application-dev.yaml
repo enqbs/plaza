@@ -1,0 +1,19 @@
+plaza:
+  postgresql:
+    host: 192.168.15.3
+    port: 5432
+    username: postgres
+    password: root
+    dbname: plaza
+  redis:
+    host: 192.168.15.3
+    port: 6379
+    password: 6aafd6b8ff62b8b3b4c7fd82c0fd29da
+  rabbitmq:
+    host: 192.168.15.3
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+  log:
+    config: classpath:logback-file.xml

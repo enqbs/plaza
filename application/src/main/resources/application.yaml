@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: plaza
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${plaza.postgresql.host}:${plaza.postgresql.port:5432}/${plaza.postgresql.dbname}
+    username: ${plaza.postgresql.username:postgres}
+    password: ${plaza.postgresql.password}
+  data:
+    redis:
+      host: ${plaza.redis.host}
+      port: ${plaza.redis.port:6379}
+      password: ${plaza.redis.password:}
+  rabbitmq:
+    host: ${plaza.rabbitmq.host}
+    port: ${plaza.rabbitmq.port:5672}
+    username: ${plaza.rabbitmq.username}
+    password: ${plaza.rabbitmq.password}
+    virtual-host: ${plaza.rabbitmq.virtual-host}
+    publisher-confirm-type: CORRELATED
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: MANUAL
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy/MM/dd HH:mm:ss
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: NON_NULL
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:mapper/*.xml
+
+logging:
+  config: ${plaza.log.config}
+  pattern:
+    dateformat: yyyy/MM/dd HH:mm:ss.SSS
+
+logstash:
+  host: ${plaza.log.logstash.host:}
+  port: ${plaza.log.logstash.port:}
