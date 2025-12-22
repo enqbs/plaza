@@ -1,10 +1,9 @@
 plaza:
-  postgresql:
-    host: 192.168.15.3
-    port: 5432
+  datasource:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://192.168.15.3:5432/plaza
     username: postgres
     password: root
-    dbname: plaza
   redis:
     host: 192.168.15.3
     port: 6379

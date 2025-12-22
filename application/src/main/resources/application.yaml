@@ -4,21 +4,21 @@ spring:
   profiles:
     active: dev
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${plaza.postgresql.host}:${plaza.postgresql.port:5432}/${plaza.postgresql.dbname}
-    username: ${plaza.postgresql.username:postgres}
-    password: ${plaza.postgresql.password}
+    driver-class-name: ${plaza.datasource.driver:}
+    url: ${plaza.datasource.url:}
+    username: ${plaza.datasource.username:}
+    password: ${plaza.datasource.password:}
   data:
     redis:
-      host: ${plaza.redis.host}
+      host: ${plaza.redis.host:localhost}
       port: ${plaza.redis.port:6379}
       password: ${plaza.redis.password:}
   rabbitmq:
-    host: ${plaza.rabbitmq.host}
+    host: ${plaza.rabbitmq.host:localhost}
     port: ${plaza.rabbitmq.port:5672}
-    username: ${plaza.rabbitmq.username}
-    password: ${plaza.rabbitmq.password}
-    virtual-host: ${plaza.rabbitmq.virtual-host}
+    username: ${plaza.rabbitmq.username:guest}
+    password: ${plaza.rabbitmq.password:guest}
+    virtual-host: ${plaza.rabbitmq.virtual-host:/}
     publisher-confirm-type: CORRELATED
     publisher-returns: true
     listener:
@@ -36,7 +36,7 @@ mybatis:
   mapper-locations: classpath*:mapper/*.xml
 
 logging:
-  config: ${plaza.log.config}
+  config: ${plaza.log.config:}
   pattern:
     dateformat: yyyy/MM/dd HH:mm:ss.SSS
 
