@@ -28,7 +28,7 @@
             <groupId>com.tzeho</groupId>
             <artifactId>common</artifactId>
         </dependency>
-        <!-- mybatis -->
+        <!-- mbg 生成的代码 -->
         <dependency>
             <groupId>com.tzeho</groupId>
             <artifactId>mbg</artifactId>
@@ -37,7 +37,17 @@
                     <groupId>org.mybatis.generator</groupId>
                     <artifactId>mybatis-generator-core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <!-- postgresql 连接驱动 -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 

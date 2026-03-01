@@ -18,7 +18,7 @@ import java.util.TimeZone;
 public class JacksonUtils {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Asia/Shanghai");
 
     static {

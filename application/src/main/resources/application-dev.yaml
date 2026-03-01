@@ -1,9 +1,14 @@
 plaza:
+  # 单数据库模式 - 默认,如需要读写分离请注释
   datasource:
     driver: org.postgresql.Driver
     url: jdbc:postgresql://192.168.15.3:5432/plaza
     username: postgres
     password: root
+  # 读写分离模式
+  sharding-sphere:
+    driver: org.apache.shardingsphere.driver.ShardingSphereDriver
+    url: jdbc:shardingsphere:classpath:shardingsphereConfig.yaml
   redis:
     host: 192.168.15.3
     port: 6379

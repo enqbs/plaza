@@ -11,13 +11,13 @@ import java.util.List;
 
 /* @description 运行 mybatis generator.不要轻易执行,数据库实体类会被覆盖!
  * @author tzeho */
-public class Generator {
+public class MBGApplication {
 
     public static void main(String[] args) throws Exception {
         List<String> warnings = new ArrayList<>();
         boolean overwrite = true;
 
-        try (InputStream inputStream = Generator.class.getResourceAsStream("/generatorConfig.xml")) {
+        try (InputStream inputStream = MBGApplication.class.getResourceAsStream("/generatorConfig.xml")) {
             ConfigurationParser cp = new ConfigurationParser(warnings);
             Configuration config = cp.parseConfiguration(inputStream);
             DefaultShellCallback callback = new DefaultShellCallback(overwrite);

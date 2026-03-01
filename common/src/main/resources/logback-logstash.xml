@@ -27,7 +27,7 @@
                     <pattern>
                         {
                         "index_date": "%d{yyyy/MM/dd}",
-                        "datetime": "%d{yyyy/MM/dd HH:mm:ss.SSS}",
+                        "datetime": "%d{yyyy-MM-dd HH:mm:ss.SSS}",
                         "application": "${APP_NAME}",
                         "level": "%level",
                         "thread": "%thread",
@@ -58,7 +58,7 @@
                     <pattern>
                         {
                         "index_date": "%d{yyyy/MM/dd}",
-                        "datetime": "%d{yyyy/MM/dd HH:mm:ss.SSS}",
+                        "datetime": "%d{yyyy-MM-dd HH:mm:ss.SSS}",
                         "application": "${APP_NAME}",
                         "level": "%level",
                         "thread": "%thread",
@@ -90,7 +90,7 @@
                     <pattern>
                         {
                         "index_date": "%d{yyyy/MM/dd}",
-                        "datetime": "%d{yyyy/MM/dd HH:mm:ss.SSS}",
+                        "datetime": "%d{yyyy-MM-dd HH:mm:ss.SSS}",
                         "application": "${APP_NAME}",
                         "level": "%level",
                         "thread": "%thread",
